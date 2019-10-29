@@ -9,8 +9,8 @@ Call ```python3 html_template_generator.py -i <your_icon> -t <site_title> -c <wi
 By replacing the given ```favicon.png``` file in the folder you can leave out the ```-i``` argument as the script will use the default one with no argument given.
 
 ## Arguments
-| Argument           |                    | Description                                               |                    | Default     |                      | Required |
-|--------------------|--------------------|-----------------------------------------------------------|--------------------|-------------|----------------------|----------|
-| -t<br>--title      | &nbsp;&nbsp;&nbsp; | The title of the site                                     | &nbsp;&nbsp;&nbsp; | -           | &nbsp; &nbsp; &nbsp; | YES      |
-| -i<br>--icon       |                    | The favicon source file<br>use a 512x512 px file           |                    | favicon.png |                      | NO       |
-| -c<br>--tileColor  |                    | Color in the Windows start-menu tile<br>Do NOT include '#' |                    | 000000      |                      | NO       |
+| Argument           | Description                                                | Default Value | Required |
+|--------------------|------------------------------------------------------------|---------------|----------|
+| -t<br>--title      | The title of the site                                      | -             | YES      |
+| -i<br>--icon       | The favicon source file<br>use a 512x512 px file           | favicon.png   | NO       |
+| -c<br>--tileColor  | Color in the Windows start-menu tile<br>Do NOT include '#' | 000000        | NO       |
