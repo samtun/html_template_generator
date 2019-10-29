@@ -5,6 +5,8 @@ from PIL import Image
 import sys, getopt
 from bs4 import BeautifulSoup, Tag
 from enum import Enum
+import urllib.request
+import json
 
 def main(argv):
     class SizeType(Enum):
@@ -15,12 +17,16 @@ def main(argv):
     # title of the site
     title = None 
     # iconFile to use as favicon
-    iconFile = None
+    iconFile = "favicon.png"
     # tile color for windows start menu 
     tileColor = "#000000"
+    # the jQuery version to use
+    jQueryVersion = "3.4.1"
 
     # get arguments from call
-    opts, args = getopt.getopt(argv, "t:i:c:", ["icon=", "title=", "tileColor="])
+    opts, args = getopt.getopt(argv, 
+        "t:i:c:j:v:p", 
+        ["icon=", "title=", "tileColor="])
 
     for opt, arg in opts:
         if opt in ("-t", "--title"):
@@ -42,6 +48,7 @@ def main(argv):
     ext = iconFile[iconFile.rfind('.'):]
     favicon = Image.open(iconFile)
     outputDir = "output/"
+    print("-- Generating icons and index.html")
 
     # icon sizes
     sizes = {
@@ -64,11 +71,11 @@ def main(argv):
     }
 
     # generate index.html and favicons
-    with open("index_stub.html") as inf:
+    with open("stubs/index.html") as inf:
         txt = inf.read()
         soup = BeautifulSoup(txt, features="html.parser")
 
-    # change values in the head section
+    # insert icons, tileColor and manifest in the head section
     soup.title.string = title
     for size, types in sizes.items():
         for type in types:
@@ -99,12 +106,40 @@ def main(argv):
             "name": "msapplication-TileColor",
             "content": "#" + tileColor
         }))
-            
-    with open("new_index.html", "w") as outf:
+
+    manifestStub = open('stubs/manifest.json', 'r')
+    data = json.load(manifestStub)
+    data['name'] = title
+    data['short_name'] = title
+    data['theme_color'] = tileColor
+    data['background_color'] = tileColor
+    with open(outputDir + "img/favicon/manifest.json", "w") as outf:
+        outf.write(json.dumps(data))
+
+    # add css and javascript
+    jQueryFileName = "jquery-" + jQueryVersion + ".min.js";
+    print("-- Downloading " + "http://code.jquery.com/" + jQueryFileName)
+    url = "http://code.jquery.com/" + jQueryFileName;
+    response = urllib.request.urlopen(url)
+    with open(outputDir + "js/" + jQueryFileName, "w") as outf:
+        outf.write(response.read().decode('utf-8'))
+
+        soup.head.append(
+            soup.new_tag(
+                "script", 
+                src = "js/" + jQueryFileName))
+    
+    print("-- Generating js and css files")
+    cssContent = open("stubs/styles.css", "r").read()
+    with open(outputDir + "css/styles.css", "w") as outf:
+        outf.write(cssContent)
+
+    jsContent = open("stubs/script_jquery.js", "r").read()
+    with open(outputDir + "js/script.js", "w") as outf:
+        outf.write(jsContent)
+    
+    with open(outputDir + "index.html", "w") as outf:
         outf.write(str(soup.prettify()))
-
-
-    #TODO generate and save manifest
 
 if __name__ == "__main__":
    main(sys.argv[1:])
