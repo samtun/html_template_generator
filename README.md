@@ -16,3 +16,6 @@ Do not include ```#``` in the tileColor
 | ```-t```<br>```--title```      | The title of the site                                          | -             | YES      |
 | ```-i```<br>```--icon```       | The favicon source file<br>use a 512x512 px file               | favicon.png   | NO       |
 | ```-c```<br>```--tileColor```  | Color in the Windows start-menu tile<br>Do NOT include ```#``` | 000000        | NO       |
+
+## Output
+You will find all generated files in the ```output/``` folder.
