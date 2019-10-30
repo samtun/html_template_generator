@@ -22,11 +22,13 @@ def main(argv):
     tileColor = "#000000"
     # the jQuery version to use
     jQueryVersion = "3.4.1"
+    # toggle jQuery usage
+    usejQuery = False
 
     # get arguments from call
     opts, args = getopt.getopt(argv, 
-        "t:i:c:j:v:p", 
-        ["icon=", "title=", "tileColor="])
+        "t:i:c:j:", 
+        ["icon=", "title=", "tileColor=", "jQuery="])
 
     for opt, arg in opts:
         if opt in ("-t", "--title"):
@@ -35,6 +37,8 @@ def main(argv):
             iconFile = arg
         elif opt in ("-c", "--tileColor"):
             tileColor = arg
+        elif opt in ("-j", "--jQuery"):
+            usejQuery = arg
 
     if title == None:
         print("Please provide a title via -t or --title")
@@ -117,26 +121,37 @@ def main(argv):
         outf.write(json.dumps(data))
 
     # add css and javascript
-    jQueryFileName = "jquery-" + jQueryVersion + ".min.js";
-    print("-- Downloading " + "http://code.jquery.com/" + jQueryFileName)
-    url = "http://code.jquery.com/" + jQueryFileName;
-    response = urllib.request.urlopen(url)
-    with open(outputDir + "js/" + jQueryFileName, "w") as outf:
-        outf.write(response.read().decode('utf-8'))
+    if (usejQuery):
+        jQueryFileName = "jquery-" + jQueryVersion + ".min.js"
+        print("-- Including jQuery")
+        url = "http://code.jquery.com/" + jQueryFileName
+        response = urllib.request.urlopen(url)
 
-        soup.head.append(
-            soup.new_tag(
-                "script", 
-                src = "js/" + jQueryFileName))
+        with open(outputDir + "js/" + jQueryFileName, "w") as outf:
+            outf.write(response.read().decode('utf-8'))
+            soup.head.append(
+                soup.new_tag(
+                    "script", 
+                    src = "js/" + jQueryFileName))
     
     print("-- Generating js and css files")
+
     cssContent = open("stubs/styles.css", "r").read()
     with open(outputDir + "css/styles.css", "w") as outf:
         outf.write(cssContent)
+        soup.head.append(
+            soup.new_tag(
+                "link", 
+                href = "css/styles.css",
+                rel = "stylesheet"))
 
-    jsContent = open("stubs/script_jquery.js", "r").read()
+    jsContent = open("stubs/script_jquery.js" if usejQuery else "stubs/script.js", "r").read()
     with open(outputDir + "js/script.js", "w") as outf:
         outf.write(jsContent)
+        soup.head.append(
+            soup.new_tag(
+                "script", 
+                src = "js/script.js"))
     
     with open(outputDir + "index.html", "w") as outf:
         outf.write(str(soup.prettify()))

@@ -17,8 +17,7 @@ Call ```python3 html_template_generator.py -t <site_title>```
 | ```-t```<br>```--title```          | The title of the site                                          | -             | YES      |
 | ```-i```<br>```--icon```           | The favicon source file<br>use a 512x512 px file               | favicon.png   | NO       |
 | ```-c```<br>```--tileColor```      | Color in the Windows start-menu tile<br>Do NOT include ```#``` | 000000        | NO       |
-| ```-j```<br>```--usejQuery```      | Set to True if you want to include jQuery                      | False         | NO       |
-| ```--jQueryVersion```              | Set the version of jQuery you'd like to use                    | 3.4.1         | NO       |
+| ```-j```<br>```--jquery```         | Set to True if you want to include jQuery                      | False         | NO       |
 
 ## Output
 You will find all generated files in the ```output/``` folder.
