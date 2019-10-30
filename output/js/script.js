@@ -1,3 +1,3 @@
-window.onload = function() {
+jQuery(document).ready(function() {
     // Add your code here
-};
+});

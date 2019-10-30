@@ -7,6 +7,7 @@ from enum import Enum
 import sys, getopt
 import urllib.request
 import json
+import os
 
 def main(argv):
     class SizeType(Enum):
@@ -73,6 +74,11 @@ def main(argv):
         57: [SizeType.APPLE],
         48: [SizeType.DEFAULT]
     }
+
+    # remove old output
+    remove_files_in_folder('output/css')
+    remove_files_in_folder('output/js')
+    remove_files_in_folder('output/img/favicon')
 
     # generate index.html and favicons
     with open("stubs/index.html") as inf:
@@ -155,6 +161,11 @@ def main(argv):
     
     with open(outputDir + "index.html", "w") as outf:
         outf.write(str(soup.prettify()))
+
+def remove_files_in_folder(folder):
+    filelist = [ f for f in os.listdir(folder) ]
+    for f in filelist:
+        os.remove(os.path.join(folder, f))
 
 if __name__ == "__main__":
    main(sys.argv[1:])
