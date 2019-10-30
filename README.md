@@ -3,6 +3,11 @@
 ## What is this
 This is a simple generator for html templates. It uses Python3 to generate a basic index.html with css and js files. The generator also takes in a favicon. This icon is automatically resized to fit all devices and the needed meta tags are genrated in the html head section.
 
+## Dependencies
+The following python modules need to be installed to run the generator:
+- Image (PIL)
+- bs4 (BeautifulSoup)
+
 ## Usage
 Call ```python3 html_template_generator.py -t <site_title>```
 

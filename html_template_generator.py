@@ -2,9 +2,9 @@
 # input a 512x512 px file and a site name to start
 
 from PIL import Image
-import sys, getopt
 from bs4 import BeautifulSoup, Tag
 from enum import Enum
+import sys, getopt
 import urllib.request
 import json
 
